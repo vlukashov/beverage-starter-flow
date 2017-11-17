@@ -5,14 +5,10 @@ dist: trusty
 install: true
 script: ./.travis.script.sh
 
-# Cache requires a master build
-branches:
-  only:
-    - master
-cache:
-  directories:
-  - $HOME/.m2
-
 before_cache:
   # remove all build artifacts
   - rm -rf $HOME/.m2/repository/com/vaadin/starter
+
+cache:
+  directories:
+  - $HOME/.m2

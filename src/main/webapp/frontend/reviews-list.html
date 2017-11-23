@@ -254,7 +254,7 @@
         <div class="reviews">
             <h1 id="header"></h1>
             <template is="dom-if" if="{{!_isEmpty(reviews)}}">
-                <template is="dom-repeat" items="[[reviews]]">
+                <template is="dom-repeat" items="[[reviews]]" on-dom-change="_onReviewsDomRepeatChanged">
                     <div class="review">
                         <div class="review__rating">
                             <p class="review__score" data-score$="[[item.score]]">[[item.score]]</p>
@@ -291,8 +291,24 @@
                 return 'reviews-list'
             }
 
+            static get properties() {
+                return {
+                    _firstRender: {
+                        type: Boolean,
+                        value: true
+                    }
+                };
+            }
+
             _isEmpty(array) {
                 return array.length == 0;
+            }
+
+            _onReviewsDomRepeatChanged() {
+                if (this._firstRender) {
+                    this._firstRender = false;
+                    performance.mark('first-reviews-dom-change');
+                }
             }
         }
         customElements.define(ReviewListElement.is, ReviewListElement);
